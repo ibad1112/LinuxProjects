@@ -13,7 +13,7 @@ if [[ $permission == "y" ]]; then
 	chef --version
 	which chef
 else
-	echo "oops be careful running unknow scripts"
+	echo "oops be careful when trying to run unknown scripts"
 fi
 
 
