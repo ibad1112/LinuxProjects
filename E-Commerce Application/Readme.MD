@@ -21,6 +21,8 @@ Setting up the environment can be broken down into five parts
 Firewall is installed and enabled with the following commands
 
 sudo yum install firewalld
+
 sudo service firewalld start
+
 sudo systemctl enable firewalld
 
