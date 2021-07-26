@@ -43,9 +43,17 @@ sudo service mariadb status
 sudo firewall-cmd --permanent --zone=public --add-port=3306/tcp                 # Adding required firewall rules to enable access to SQL Database
 sudo firewall-cmd --reload                                                      # Reload the firewall to make sure the changes take place
 ```
-Check whether the port is open using this command
+Check whether the new rule is in place or not
 ```
 sudo firewall-cmd --list-all
+```
+This will show the 3306 in the port tab, indicating that the new rule is in place
+
+### Downloading Supporting Code
+
+```
+sudo yum install -y git
+git clone https://github.com/ibad1112/LinuxProjects.git
 ```
 
 ### Configuring Database
@@ -66,25 +74,43 @@ Continuing on
 MariaDB > CREATE USER 'commerceuser'@'localhost' IDENTIFIED BY 'commercepassword' ;     # Creating user
 MariaDB > GRANT ALL PRIVILEGES ON *.* TO 'commerceuser'@'localhost' ;                   # Granting access
 MariaDB > FLUSH PRIVILEGES ;                                                            # Flush all privileges
+MARIADB > exit ;                                                                        # Exiting from MariaDB
+```
+
+Then go to the Ecommerce Application folder in the LinuxProjects directory
+
+```
 mysql < db-data.sql                                                                     # Loading the inventory data inside the script
 ```
+
+To validate if the data has been properly stored inside your database run the following commands
+
+```
+mysql
+show databases;
+USE commercedb;
+select * from products;
+```
+
+The product list will appear showing that the data was properly loaded
 
 ### Installing and configuring httpd
 
 ```
-sudo yum install -y httpd php php-mysql                                         # php-mysql is a package to allow php to connect to mysql
+sudo yum install -y httpd php php-mysqlnd                                         # php-mysql is a package to allow php to connect to mysql
 sudo firewall-cmd --permanent --zone=public --add-port=80/tcp                   # Adding firewall rule to allow external access to port 80
 sudo firewall-cmd --reload   
+```
+
+Check whether the new rule is in place or not
+```
+sudo firewall-cmd --list-all
+```
+This will show the 80 in the port tab, indicating that the new rule is in place
+
 sudo vi /etc/httpd/conf/httpd.conf                                              # configure Directory Index to use index.php instead of index.html
 sudo service httpd start
 sudo systemctl enable httpd
-```
-
-### Downloading Supporting Code
-
-```
-sudo yum install -y git
-git clone https://github.com/<application>.git /var/www/html/
 ```
 
 ### Testing 
