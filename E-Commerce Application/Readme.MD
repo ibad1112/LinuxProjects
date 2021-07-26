@@ -8,17 +8,9 @@ The e-commerce application is a fictional online store that sells electronic dev
 
 ## Setting up the Environment
 
-Setting up the environment can be broken down into five parts
-
-1. Selecting a system on which the application is to be deployed and install firewall in it. In our case it will be deployed on a CentOS machine.
-2. Install and configure apache httpd server. Enable and start the service.
-3. Install and configure MariaDB database. Enable and start the database services.
-4. Install and configure Php on the server. Configure the source code to work with apache and Php.
-5. Creating the necessary role to communicate between these services.
+Setting up the environment is done via the following commands
 
 ### Installing Firewall
-
-Firewall is installed and enabled with the following commands
 
 sudo yum install firewalld
 
@@ -26,3 +18,73 @@ sudo service firewalld start
 
 sudo systemctl enable firewalld
 
+### Installing MariaDB
+
+sudo yum install mariadb-server
+
+vi /etc/my.cnf  # Configure the file with right port. It is the MySQL configuration file. We use MySQL client to connect to the MariaDB database
+
+sudo service mariadb start
+
+sudo systemctl enable mariadb
+
+### Configuring Firewall
+
+sudo firewall-cmd --permanent --zone=public --add-port=3306/tcp                 # Adding required firewall rules to enable access to SQL Database
+
+sudo firewall-cmd --reload                                                      # Reload the firewall to make sure the changes take place
+
+### Configuring Database
+
+mysql                                                                           # Accessing MySQL
+
+MariaDB > CREATE DATABASE ecomdb;                                               # Creating database
+
+MariaDB > CREATE USER 'ecomuser'@'localhost' IDENTIFIED BY 'ecompassword' ;     # Creating user
+
+MariaDB > GRANT ALL PRIVILEGES ON *.* TO 'ecomuser'@'localhost' ;               # Granting access
+
+MariaDB > FLUSH PRIVILEGES ;                                                    # Flush all privileges
+
+mysql < db-load-script.sql                                                      # Loading the inventory data inside the script
+
+### Installing and configuring httpd
+
+sudo yum install -y httpd php php-mysql                                         # php-mysql is a package to allow php to connect to mysql
+
+sudo firewall-cmd --permanent --zone=public --add-port=80/tcp                   # Adding firewall rule to allow external access to port 80
+
+sudo firewall-cmd --reload   
+
+sudo vi /etc/httpd/conf/httpd.conf                                              # configure Directory Index to use index.php instead of index.html
+
+sudo service httpd start
+
+sudo systemctl enable httpd
+
+### Downloading Supporting Code
+
+sudo yum install -y git
+
+git clone https://github.com/<application>.git /var/www/html/
+
+### Testing 
+  
+curl http://localhost
+  
+  
+## Single Node Deployment
+  
+The above method deploys the LAMP stack on the single node, meaning we installed and configured database, apache and php on the same node.
+
+## Multi Node Deployment
+  
+To perform multinode deployment the database must be installed on one node and the webserver and php on other. The rest of the setup is same. One must also configure the index.php on the webserver with the ip address of the database server. Modify this line
+
+$link = mysqli_connect('ip address of webserver', 'ecomuser', 'ecompassword', 'ecomdb');
+  
+Likewise in the database while creating the user and the access remember to provide the ip address of the database server. For example the following commands should be changed
+  
+MariaDB > CREATE USER 'ecomuser'@'(ip address of database here)' IDENTIFIED BY 'ecompassword' ;    
+
+MariaDB > GRANT ALL PRIVILEGES ON *.* TO '(ip address of database here)' ;               
