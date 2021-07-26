@@ -1,14 +1,4 @@
-This project aim is to develop and deploy an e-commerce application. 
-
-It consists of two parts 
-1. Setting up the Environment.
-2. Deploying the application.
-
-The e-commerce application is a fictional online store that sells electronic device. It is a LAMP stack application, however instead of MYSQL, MariaDB is used which is a community fork of MYSQL and is pretty much similar. If required one can replace MariaDB with MYSQL as well.
-
-## Setting up the Environment
-
-Setting up the environment is done via the following commands
+This project aim is to develop and deploy an e-commerce application. The e-commerce application is a fictional online store that sells electronic device. It is a LAMP stack application, however instead of MYSQL, MariaDB is used which is a community fork of MYSQL and is pretty much similar. If required one can replace MariaDB with MYSQL as well. Here is how to deploy it in CentOS system
 
 ### Installing Firewall
 
@@ -53,7 +43,10 @@ This will show the 3306 in the port tab, indicating that the new rule is in plac
 
 ```
 sudo yum install -y git
-git clone https://github.com/ibad1112/LinuxProjects.git
+git clone https://github.com/ibad1112/LinuxProjects.git /var/www/html/
+sudo rm -rf chefinstallation.sh Docs LICENSE Readme.MD
+sudo mv E-Commerce\ Application/*  ./
+sudo rm -rf E-Commerce\ Application
 ```
 
 ### Configuring Database
@@ -77,10 +70,10 @@ MariaDB > FLUSH PRIVILEGES ;                                                    
 MARIADB > exit ;                                                                        # Exiting from MariaDB
 ```
 
-Then go to the Ecommerce Application folder in the LinuxProjects directory
+Then go into the assests directory in LinuxProjects/Ecommerce Application folder
 
 ```
-mysql < db-data.sql                                                                     # Loading the inventory data inside the script
+mysql < /var/www/html/assets/db-data.sql                                                                     # Loading the inventory data inside the script
 ```
 
 To validate if the data has been properly stored inside your database run the following commands
@@ -108,9 +101,16 @@ sudo firewall-cmd --list-all
 ```
 This will show the 80 in the port tab, indicating that the new rule is in place
 
+```
 sudo vi /etc/httpd/conf/httpd.conf                                              # configure Directory Index to use index.php instead of index.html
 sudo service httpd start
 sudo systemctl enable httpd
+```
+
+To check whether the service is active and running
+
+```
+sudo service httpd status
 ```
 
 ### Testing 
