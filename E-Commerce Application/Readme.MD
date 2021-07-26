@@ -44,6 +44,8 @@ This will show the 3306 in the port tab, indicating that the new rule is in plac
 ```
 sudo yum install -y git
 git clone https://github.com/ibad1112/LinuxProjects.git /var/www/html/
+sudo cd /var/www/html/
+sudo rm -rf index.html
 sudo rm -rf chefinstallation.sh Docs LICENSE Readme.MD
 sudo mv E-Commerce\ Application/*  ./
 sudo rm -rf E-Commerce\ Application
@@ -102,7 +104,6 @@ sudo firewall-cmd --list-all
 This will show the 80 in the port tab, indicating that the new rule is in place
 
 ```
-sudo vi /etc/httpd/conf/httpd.conf                                              # configure Directory Index to use index.php instead of index.html
 sudo service httpd start
 sudo systemctl enable httpd
 ```
