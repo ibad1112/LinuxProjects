@@ -112,6 +112,14 @@ To check whether the service is active and running
 ```
 sudo service httpd status
 ```
+### Update index.php file
+
+```
+vi index.php
+```
+
+In this line $link = mysqli_connect('ip address', 'commerceuser', 'commercepassword', 'commercedb');
+replace ip address with localhost since we are doing it on a single node.
 
 ### Testing 
 
@@ -128,7 +136,7 @@ The above method deploys the LAMP stack on the single node, meaning we installed
 To perform multinode deployment the database must be installed on one node and the webserver and php on other. The rest of the setup is same. One must also configure the index.php on the webserver with the ip address of the database server. Modify this line
 
 ```
-$link = mysqli_connect('ip address of webserver', 'ecomuser', 'ecompassword', 'ecomdb');
+$link = mysqli_connect('localhost', 'commerceuser', 'commercepassword', 'commercedb');
 ```
 
 Likewise in the database while creating the user and the access remember to provide the ip address of the database server. For example the following commands should be changed
