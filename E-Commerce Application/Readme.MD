@@ -117,6 +117,9 @@ sudo service httpd status
 
 ```
 vi index.php
+or simply
+sudo sed -i 's/172.20.1.101/localhost/g' /var/www/html/index.php
+
 ```
 
 In this line $link = mysqli_connect('ip address', 'commerceuser', 'commercepassword', 'commercedb');
