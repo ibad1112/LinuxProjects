@@ -63,10 +63,10 @@ show databases;
 Continuing on
 
 ```
-MariaDB > CREATE USER 'ecomuser'@'localhost' IDENTIFIED BY 'ecompassword' ;     # Creating user
-MariaDB > GRANT ALL PRIVILEGES ON *.* TO 'ecomuser'@'localhost' ;               # Granting access
-MariaDB > FLUSH PRIVILEGES ;                                                    # Flush all privileges
-mysql < db-load-script.sql                                                      # Loading the inventory data inside the script
+MariaDB > CREATE USER 'commerceuser'@'localhost' IDENTIFIED BY 'commercepassword' ;     # Creating user
+MariaDB > GRANT ALL PRIVILEGES ON *.* TO 'commerceuser'@'localhost' ;                   # Granting access
+MariaDB > FLUSH PRIVILEGES ;                                                            # Flush all privileges
+mysql < db-data.sql                                                                     # Loading the inventory data inside the script
 ```
 
 ### Installing and configuring httpd
